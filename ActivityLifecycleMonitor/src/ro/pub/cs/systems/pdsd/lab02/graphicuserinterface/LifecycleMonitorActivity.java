@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
@@ -64,10 +65,12 @@ public class LifecycleMonitorActivity extends Activity {
 		}
 		
 	}
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_lifecycle_monitor);
         
         Button okButton = (Button)findViewById(R.id.ok_button);
@@ -75,8 +78,14 @@ public class LifecycleMonitorActivity extends Activity {
         Button cancelButton = (Button)findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
         Log.d(Constants.TAG, "onCreate() method was invoked");
+        if(savedInstanceState!=null){
+    		Log.d(Constants.TAG,"Instance was restored");
+    		((EditText)findViewById(R.id.username_edit_text)).setText(savedInstanceState.getString(Constants.USERNAME_TAG));
+    		((EditText)findViewById(R.id.password_edit_text)).setText(savedInstanceState.getString(Constants.PASSWORD_TAG));
+        }
     }    
-
+    
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -94,5 +103,52 @@ public class LifecycleMonitorActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void onSaveInstanceState(Bundle savedInstanceState){
+    	super.onSaveInstanceState(savedInstanceState);
+    	Log.d(Constants.TAG,"onSave method was invoked");
+        CheckBox c = (CheckBox) findViewById(R.id.remember_me_checkbox);
+        if(c.isChecked()){
+        	savedInstanceState.putString(Constants.USERNAME_TAG, ((EditText)findViewById(R.id.username_edit_text)).getText().toString());
+        	savedInstanceState.putString(Constants.PASSWORD_TAG, ((EditText)findViewById(R.id.password_edit_text)).getText().toString());
+        }
+        	
+    	
+    }
+//    public void onRestoreInstanceState(Bundle savedInstanceState){
+//      super.onRestoreInstanceState();
+//    	Log.d(Constants.TAG,"onRestore method was invoked");
+//    	((EditText)findViewById(R.id.username_edit_text)).setText(savedInstanceState.getString(Constants.USERNAME_TAG));
+//    	((EditText)findViewById(R.id.password_edit_text)).setText(savedInstanceState.getString(Constants.PASSWORD_TAG));
+//
+//    }
+    protected void onStart(){
+    	Log.d(Constants.TAG,"onStart method was invoked");
+    	super.onStart();
+    }
+
+    protected void onRestart(){
+    	Log.d(Constants.TAG,"onReStart method was invoked");
+    	super.onRestart();
+    }
+
+    protected void onResume(){
+    	Log.d(Constants.TAG,"onResume method was invoked");
+    	super.onResume();
+    }
+
+    protected void onPause(){
+    	Log.d(Constants.TAG,"onPause method was invoked");
+    	super.onPause();
+    }
+
+    protected void onStop(){
+    	Log.d(Constants.TAG,"onStop method was invoked");
+    	super.onStop();
+    }
+
+    protected void onDestroy(){
+    Log.d(Constants.TAG,"onDestroy method was invoked");
+	super.onDestroy();
     }
 }
